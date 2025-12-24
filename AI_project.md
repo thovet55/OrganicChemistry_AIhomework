@@ -1,3 +1,7 @@
+#### Aim
+$t_{\frac{1}{2}}$ prediction on the ring open of P-type Diarylethenes
+
+-------
 #### DataBase
 $SMILES(o)$+$t_{\frac{1}{2}}$+$SMILES(c)$
 Total of $43$ available molecules.
@@ -25,14 +29,6 @@ CV MAE       | 2.439 +/- 0.669        | 2.297 +/- 0.411
  based on
  ```python
  # -*- coding: utf-8 -*-  
-"""  
-AIn19.py (Final Fix: Variable Name & Encoding)  
-版本：v8.1  
-修复内容：  
-1. [NameError Fix] 修正 evaluate_model 中 p_te 与 p_test 的变量名不一致问题。  
-2. [Encoding Fix] 结果写入时指定 encoding='utf-8'，解决 Windows 下 Emoji 报错。  
-3. [Features] 保持 Smart HOMA + Hybrid Kernel + Dual SVG Verification。  
-"""  
   
 import os, time, argparse, sys  
 import numpy as np  
@@ -551,17 +547,16 @@ scan for TS calc.
 ChemBERTa——PCA——10 dimensions
 +$\Delta HOMA$
 +$\Delta Q$
+RF——base
++$\Delta ML$(GP)
 $r^2: 0.6$
 $MAE: 2$
 coded as:
 ```python
 # -*- coding: utf-8 -*-  
 """  
-AIn37.py  
-版本：v30.0 (RF-Guided GP Residual Learning)  
 目标：DAE 光开关半衰期预测 (T-type only)架构：  
     1. Feature Engineering:       - Deep Tower: ChemBERTa (v1) -> PCA (10 components)       - Physics Tower: dHOMA (Aromaticity), dQ (Charge Transfer), Rbond (Strain)    2. Model Architecture (Hybrid):       - Baseline: Random Forest (trained via OOF to prevent leakage)       - Refinement: Gaussian Process (learning the residuals)       - Kernel: Matern 5/2 (ARD) for physical consistency    3. Output: Prediction + Uncertainty (Sigma) + Outlier Detection  
-作者：Gemini (Your AI Partner)  
 时间：2025-12  
 """  
   
@@ -647,8 +642,7 @@ class MoleculePreprocessor:
   
 def to_single_bonds(m):  
     """  
-    [关键步骤] 将分子所有键强制转化为单键，且去除芳香性标记。  
-    目的：为了让 MCS 算法能忽略双键/单键的变化，只匹配骨架连接关系。  
+   将分子所有键强制转化为单键，且去除芳香性标记。    
     """    if m is None: return None  
     rw = Chem.RWMol()  
     # 1. 复制原子，清除芳香性  
@@ -680,7 +674,7 @@ def shortest_dist(mol, u, v):
 def align_chain_atoms(atoms, u_break, v_break):  
     """  
     将开链原子的顺序对齐，使其与闭环时的环原子顺序对应。  
-    用于正确计算 Open 态的 HOMA（虽然它是开的，但我们要算对应原子的局部指标）。  
+    用于正确计算 Open 态的 HOMA  
     """    if u_break not in atoms or v_break not in atoms: return atoms  
     lst = list(atoms)  
     try:  
@@ -1117,6 +1111,13 @@ def main():
 if __name__ == "__main__":  
     main()
 ```
+
+##### Achievement & Issues & Further Improvement
+已印证dHOMA、dQ作为物理特征显著影响模型拟合（$R^2$ 0.1~0.6)
+（主要问题）数据量过小，难以印证模型改进；且包含坏点
+RF本身效果差，$\Delta ML$效果存疑；
+物理模型精度不足（MMFF力学场）——xTB？
+特征维度过低，当然由于数据量问题无法增加；
 ##### Abandoned
 xTB calc.
 Self-designed molecular extension: unable to tell the differences between T&N type.
