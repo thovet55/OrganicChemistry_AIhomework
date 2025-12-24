@@ -3,7 +3,7 @@ $t_{\frac{1}{2}}$ prediction on the ring open of P-type Diarylethenes
 
 -------
 #### DataBase
-$SMILES(o)$+$t_{\frac{1}{2}}$+$SMILES(c)$
+$SMILES(o)$ + $t_{\frac{1}{2}}$+$SMILES(c)$
 Total of $43$ available molecules.
 
 ________
@@ -11,7 +11,7 @@ ________
 ##### RingIdentity
 Converted to single bond+MCS $\Delta$
  $successfull$ :
- <?xml version='1.0' encoding='iso-8859-1'?>
+<?xml version='1.0' encoding='iso-8859-1'?>
 <svg version='1.1' baseProfile='full'
               xmlns='http://www.w3.org/2000/svg'
                       xmlns:rdkit='http://www.rdkit.org/xml'
