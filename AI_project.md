@@ -11,7 +11,7 @@ ________
 ##### RingIdentity
 Converted to single bond+MCS $\Delta$
  $successfull$ :
- 
+ ![分子结构](other/mol_000.svg)
 ##### 3Dprocess
  Kekulization+ $\Delta$ HOMA
 ```
