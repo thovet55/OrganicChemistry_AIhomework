@@ -14,7 +14,7 @@ Converted to single bond+MCS$\Delta$
  and so on...
  _______
 ##### 3Dprocess
- Kekulization+$\Delta$HOMA
+ Kekulization+$\Delta$ HOMA
 ```
 Final Report (Mean +/- Std):
 -----------------------------------------------------------------
@@ -545,10 +545,10 @@ scan for TS calc.
 过拟合严重~0.9 MAE~2.8
 ##### Improvement：RF+GP(LOOCV)+ChemBERTa
 ChemBERTa——PCA——10 dimensions
-+$\Delta HOMA$
-+$\Delta Q$
++ $\Delta HOMA$
++ $\Delta Q$
 RF——base
-+$\Delta ML$(GP)
++ $\Delta ML$ (GP)
 $r^2: 0.6$
 $MAE: 2$
 coded as:
@@ -1115,7 +1115,7 @@ if __name__ == "__main__":
 ##### Achievement & Issues & Further Improvement
 已印证dHOMA、dQ作为物理特征显著影响模型拟合（$R^2$ 0.1~0.6)
 （主要问题）数据量过小，难以印证模型改进；且包含坏点
-RF本身效果差，$\Delta ML$效果存疑；
+RF本身效果差，$\Delta ML$ 效果存疑；
 物理模型精度不足（MMFF力学场）——xTB？
 特征维度过低，当然由于数据量问题无法增加；
 ##### Abandoned
