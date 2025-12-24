@@ -1929,13 +1929,13 @@ solvent=toluene
 scan for TS calc.
 #### Model
 ##### First：RF/GP+MorganPrint
-过拟合严重~0.9 MAE~2.8
+过拟合严重 $R^2$ ~0.9 MAE~2.8
 ##### Improvement：RF+GP(LOOCV)+ChemBERTa
 ChemBERTa——PCA——10 dimensions
-+$\Delta HOMA$
-+$\Delta Q$
++ $\Delta HOMA$
++ $\Delta Q$
 RF——base
-+$\Delta ML$(GP)
++ $\Delta ML$ (GP)
 $r^2: 0.6$
 $MAE: 2$
 coded as:
