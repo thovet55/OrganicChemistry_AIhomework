@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-DAE Molecular Photochemical Property Prediction Script (Version 2.0):
-1. ChemBERTa (Open SMILES) -> StandardScaler -> PCA(10).
-2. Physics: Robust MCS -> HOMA (Sum of Core+Fused) + dQ (Min-Min).
-3. Models: RF & GP with LOOCV.
+DAE Molecular Photochemical Property Prediction Script (Version 2.0)
 """
 
 import os
@@ -54,7 +51,7 @@ def try_read_csv(filepath):
             return pd.read_csv(filepath, encoding=enc)
         except:
             continue
-    raise ValueError(f"❌ Failed to read {filepath}")
+    raise ValueError(f"[ERROR] Failed to read {filepath}")
 
 
 class MoleculePreprocessor:
@@ -147,7 +144,7 @@ def _calc_homa_unit(mol_3d, atoms, mode):
 
 
 # =========================
-# 2. Physics Tower (Logic from Predictor.py)
+# 2. Physics Tower
 # =========================
 
 def extract_physical_features(df):
@@ -270,7 +267,7 @@ def extract_deep_features(smiles_list, n_components=10):
         model = AutoModel.from_pretrained(MODEL_NAME)
         model.eval()
     except Exception as e:
-        print(f"❌ Model Error: {e}")
+        print(f"[ERROR] Model Error: {e}")
         sys.exit(1)
 
     embeddings = []
@@ -301,7 +298,7 @@ def extract_deep_features(smiles_list, n_components=10):
 # =========================
 
 def main():
-    print("🚀 DAE Prediction Script Version 2.0 (Refactored Predictor)")
+    print(" DAE Prediction Script Version 2.0 (Refactored Predictor)")
 
     # 1. Load Data
     csv_file = "data0.csv"  # Hardcoded default or use argparse if preferred
@@ -339,7 +336,7 @@ def main():
     X_phys = extract_physical_features(df)
 
     # Physics Audit
-    print("\n   🔍 Physics Audit:")
+    print("\n    Physics Audit:")
     valid_count = np.count_nonzero(np.sum(np.abs(X_phys), axis=1))
     print(f"   Calculated: {valid_count}/{len(df)} molecules")
     if valid_count > 0:
@@ -383,7 +380,7 @@ def main():
     mae_gp = mean_absolute_error(actuals, p_gp)
 
     print("\n" + "=" * 40)
-    print(f"🏆 Version 2.0 Final Results:")
+    print(f"   Version 2.0 Final Results:")
     print(f"   RF R2 : {r2_rf:.4f}  |  MAE : {mae_rf:.4f}")
     print(f"   GP R2 : {r2_gp:.4f}  |  MAE : {mae_gp:.4f}")
     print("=" * 40)
@@ -404,11 +401,9 @@ def main():
                         help="Path to the training dataset (default: data.csv).")
     args = parser.parse_args()
 
-    print("🚀 DAE Predictor V2.0: Initializing...")
-
-    # --- Phase 1: Training (Establish the Knowledge Base) ---
+    # --- Phase 1: Training  ---
     if not os.path.exists(args.train_data):
-        print(f"Error: Training data '{args.train_data}' not found. Cannot build model.")
+        print(f"[ERROR] Training data '{args.train_data}' not found. Cannot build model.")
         return
 
     print(f"\n[Phase 1] Training Model on {args.train_data}...")
@@ -468,7 +463,7 @@ def main():
     # --- Phase 2: Inference (Predicting New Data) ---
     print(f"\n[Phase 2] Predicting on {args.csv}...")
     if not os.path.exists(args.csv):
-        print(f"Error: Target file '{args.csv}' not found.")
+        print(f"[ERROR] Target file '{args.csv}' not found.")
         return
 
     df_target = try_read_csv(args.csv)

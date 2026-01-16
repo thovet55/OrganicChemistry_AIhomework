@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-DAE Molecular Photochemical Property Prediction Script (Version 2.0):
-1. ChemBERTa (Open SMILES) -> StandardScaler -> PCA(10).
-2. Physics: Robust MCS -> HOMA (Sum of Core+Fused) + dQ (Min-Min).
-3. Models: RF & GP with LOOCV.
+DAE Molecular Photochemical Property Prediction Script (Version 2.0)
 """
 
 import os
@@ -54,7 +51,7 @@ def try_read_csv(filepath):
             return pd.read_csv(filepath, encoding=enc)
         except:
             continue
-    raise ValueError(f"❌ Failed to read {filepath}")
+    raise ValueError(f"[ERROR] Failed to read {filepath}")
 
 
 class MoleculePreprocessor:
@@ -270,7 +267,7 @@ def extract_deep_features(smiles_list, n_components=10):
         model = AutoModel.from_pretrained(MODEL_NAME)
         model.eval()
     except Exception as e:
-        print(f"❌ Model Error: {e}")
+        print(f"[ERROR] Model Error: {e}")
         sys.exit(1)
 
     embeddings = []
@@ -301,10 +298,10 @@ def extract_deep_features(smiles_list, n_components=10):
 # =========================
 
 def main():
-    print("🚀 DAE Prediction Script Version 2.0 (Refactored Predictor)")
+    print("DAE Prediction Script Version 2.0 (Refactored Predictor)")
 
     # 1. Load Data
-    csv_file = "data.csv"  # Hardcoded default or use argparse if preferred
+    csv_file = "data.csv"
     if len(sys.argv) > 1 and sys.argv[1].endswith('.csv'):
         csv_file = sys.argv[1]
     elif "--csv" in sys.argv:
@@ -339,7 +336,7 @@ def main():
     X_phys = extract_physical_features(df)
 
     # Physics Audit
-    print("\n   🔍 Physics Audit:")
+    print("\n   Physics Audit:")
     valid_count = np.count_nonzero(np.sum(np.abs(X_phys), axis=1))
     print(f"   Calculated: {valid_count}/{len(df)} molecules")
     if valid_count > 0:
@@ -383,7 +380,7 @@ def main():
     mae_gp = mean_absolute_error(actuals, p_gp)
 
     print("\n" + "=" * 40)
-    print(f"🏆 Version 2.0 Final Results:")
+    print(f"   Version 2.0 Final Results:")
     print(f"   RF R2 : {r2_rf:.4f}  |  MAE : {mae_rf:.4f}")
     print(f"   GP R2 : {r2_gp:.4f}  |  MAE : {mae_gp:.4f}")
     print("=" * 40)
