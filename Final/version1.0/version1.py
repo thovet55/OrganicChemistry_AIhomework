@@ -37,7 +37,7 @@ def try_read_csv(filepath):
         try:
             # 尝试读取
             df = pd.read_csv(filepath, encoding=enc)
-            print(f"✅ Successfully loaded {filepath} using encoding: {enc}")
+            print(f"  Successfully loaded {filepath} using encoding: {enc}")
             return df
         except UnicodeDecodeError:
             continue
@@ -45,7 +45,7 @@ def try_read_csv(filepath):
             # 如果是其他错误（如文件不存在），直接抛出
             raise e
 
-    raise ValueError(f"❌ Failed to read {filepath}. Tried encodings: {encodings}")
+    raise ValueError(f"[ERROR] Failed to read {filepath}. Tried encodings: {encodings}")
 
 
 def to_single_bond_mol(mol):
@@ -218,16 +218,16 @@ def extract_physical_features(open_smiles, closed_smiles):
 # =========================
 
 def main():
-    print("🚀 DAE Prediction Workflow (v1.1) Started")
+    print(" DAE Prediction Workflow (v1.1) Started")
 
     # 3.1 Data Loading
     input_csv = "data.csv"
-    print(f"📂 Loading data from {input_csv}...")
+    print(f" Loading data from {input_csv}...")
 
     try:
         df = try_read_csv(input_csv)
     except Exception as e:
-        print(f"❌ Fatal Error loading CSV: {e}")
+        print(f"[ERROR] Fatal Error loading CSV: {e}")
         return
 
     # 自动处理列名
